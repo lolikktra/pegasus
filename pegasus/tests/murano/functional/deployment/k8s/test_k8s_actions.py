@@ -21,21 +21,21 @@ from pegasus.bases import muranobase as core
 CONF = cfg.cfg.CONF
 
 
-class TestKubeSimple(core.MuranoTestsCore):
+class TestKubeActions(core.MuranoTestsCore):
     @classmethod
     def setUpClass(cls):
-        super(TestKubeSimple, cls).setUpClass()
+        super(TestKubeActions, cls).setUpClass()
 
         cls.kubernetes = CONF.murano.kubernetes_image
         cls.flavor = CONF.murano.standard_flavor
 
     def setUp(self):
-        super(TestKubeSimple, self).setUp()
+        super(TestKubeActions, self).setUp()
 
         self.environments = []
 
     def tearDown(self):
-        super(TestKubeSimple, self).tearDown()
+        super(TestKubeActions, self).tearDown()
 
     def test_k8s_action_scalenodes(self):
         post_body = self.get_k8s_app()

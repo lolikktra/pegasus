@@ -51,7 +51,7 @@ class MuranoTestsCore(testtools.TestCase, testtools.testcase.WithAttributes,
         super(MuranoTestsCore, cls).setUpClass()
 
         cfg.load_config()
-        cls.murano_url = cls._get_endpoint(service_type='application_catalog',
+        cls.murano_url = cls._get_endpoint(service_type='application-catalog',
                                             endpoint_type='publicURL')
         cls.murano_endpoint = cls.murano_url + '/v1/'
         cls.keyname = CONF.murano.keyname
@@ -67,7 +67,7 @@ class MuranoTestsCore(testtools.TestCase, testtools.testcase.WithAttributes,
         self.keystone = self._get_auth()
         self.heat = self.get_heat_client(self.keystone)
         self.murano = self.get_murano_client(self.keystone)
-        self.headers = {'X-Auth-Token': self.murano.auth_token,
+        self.headers = {'X-Auth-Token': self.murano.http_client.auth_token,
                         'content-type': 'application/json'}
 
         self.environments = []
@@ -449,8 +449,10 @@ class MuranoTestsCore(testtools.TestCase, testtools.testcase.WithAttributes,
 
     def _log_report(self, environment):
         deployment = self.get_last_deployment(environment)
-        details = deployment.result['result']['details']
-        LOG.error('Exception found:\n {0}'.format(details))
+        # details = deployment.result['result']['details']
+        # due to empty dictionary received in responce of deployment.result
+        # details in string below changed to deployment
+        LOG.error('Exception found:\n {0}'.format(deployment))
         report = self.get_deployment_report(environment, deployment)
         LOG.debug('Report:\n {0}\n'.format(report))
 
